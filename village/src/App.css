@@ -114,6 +114,7 @@ button {
   width: 150px;
   border: none;
   padding: 10px;
+  cursor: pointer;
 }
 
 .delete-button {
