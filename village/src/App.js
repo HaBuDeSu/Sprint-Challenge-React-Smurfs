@@ -12,6 +12,10 @@ class App extends Component {
     super(props);
     this.state = {
       smurfs: [],
+      activeSmurf: null,
+      name: "",
+      age: "",
+      height: ""
     };
   }
   // add any needed code to ensure that the smurfs collection exists on state and it has data coming from the server
@@ -40,6 +44,33 @@ class App extends Component {
     .catch(error => console.log(error))
   }
 
+  selectActiveSmurf = (smurf) => {
+    this.setState({
+      activeSmurf: smurf,
+      name: smurf.name,
+      age: smurf.age,
+      height: smurf.height
+    });
+    this.props.history.push("/smurf-form/")
+  }
+
+  updateSmurf = e => {
+    e.preventDefault();
+    axios.put(`http://localhost:3333/smurfs/${this.state.activeSmurf.id}`, {
+      name: this.state.name,
+      age: this.state.age,
+      height: this.state.height
+    })
+    .then(response => {this.setState({smurfs: response.data, activeSmurf: null}); this.props.history.push("/")})
+    .catch(error => console.log(error))
+  }
+
+  handleInputChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -48,10 +79,19 @@ class App extends Component {
           <NavLink to="/smurf-form/" activeClassName="active">Add a New Smurf</NavLink>
         </nav>
         <Route path="/smurf-form" render={(props) => {
-          return(<SmurfForm {...props} addSmurf={this.addSmurf}/>)
+          return(<SmurfForm
+            {...props}
+            addSmurf={this.addSmurf}
+            activeSmurf={this.state.activeSmurf}
+            updateSmurf={this.updateSmurf}
+            handleInputChange={this.handleInputChange}
+            name={this.state.name}
+            age={this.state.age}
+            height={this.state.height}
+          />)
         }} />
         <Route exact path="/" render={(props) => {
-          return(<Smurfs {...props} smurfs={this.state.smurfs} deleteSmurf={this.deleteSmurf}/>)
+          return(<Smurfs {...props} smurfs={this.state.smurfs} deleteSmurf={this.deleteSmurf} selectActiveSmurf={this.selectActiveSmurf}/>)
         }} />
       </div>
     );
