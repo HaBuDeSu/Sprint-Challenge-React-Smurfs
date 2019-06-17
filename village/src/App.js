@@ -4,6 +4,7 @@ import './App.css';
 import SmurfForm from './components/SmurfForm';
 import Smurfs from './components/Smurfs';
 import axios from 'axios';
+import {Route} from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
@@ -28,15 +29,19 @@ class App extends Component {
       name: document.getElementById("name").value,
       age: document.getElementById("age").value,
       height: document.getElementById("height").value})
-      .then(response => this.setState({smurfs: response.data}))
+      .then(response => {this.setState({smurfs: response.data}); this.props.history.push("/")})
       .catch(error => console.log(error))
   }
 
   render() {
     return (
       <div className="App">
-        <SmurfForm addSmurf={this.addSmurf}/>
-        <Smurfs smurfs={this.state.smurfs} />
+        <Route path="/smurf-form" render={(props) => {
+          return(<SmurfForm {...props} addSmurf={this.addSmurf}/>)
+        }} />
+        <Route exact path="/" render={(props) => {
+          return(<Smurfs {...props} smurfs={this.state.smurfs} />)
+        }} />
       </div>
     );
   }
