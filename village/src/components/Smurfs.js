@@ -12,10 +12,6 @@ class Smurfs extends Component {
             return (
               <Smurf
                 smurf={smurf}
-                name={smurf.name}
-                id={smurf.id}
-                age={smurf.age}
-                height={smurf.height}
                 key={smurf.id}
                 deleteSmurf={this.props.deleteSmurf}
                 selectActiveSmurf={this.props.selectActiveSmurf}

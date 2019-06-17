@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import SmurfForm from './components/SmurfForm';
 import Smurfs from './components/Smurfs';
+import Smurf from './components/Smurf';
 import axios from 'axios';
 import {Route} from 'react-router-dom';
 import {NavLink} from 'react-router-dom';
@@ -92,6 +93,9 @@ class App extends Component {
         }} />
         <Route exact path="/" render={(props) => {
           return(<Smurfs {...props} smurfs={this.state.smurfs} deleteSmurf={this.deleteSmurf} selectActiveSmurf={this.selectActiveSmurf}/>)
+        }} />
+        <Route path="/smurf/:id" render={(props) => {
+          return(<Smurf {...props} smurf={this.state.activeSmurf}/>)
         }} />
       </div>
     );
